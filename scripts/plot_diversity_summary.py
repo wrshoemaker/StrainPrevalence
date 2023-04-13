@@ -262,8 +262,10 @@ def make_plot(variant_type):
     x_norm = numpy.linspace(stats.norm.ppf(0.001, shape_norm, scale_norm), stats.norm.ppf(0.999, shape_norm, scale_norm), 100)
 
     # log-likelihood test
-    pdf_loggamma = stats.loggamma.pdf(x, shape_gamma, loc=loc_gamma, scale=scale_gamma)
-    pdf_norm = stats.norm.pdf(x_norm, shape_norm, scale_norm)
+    pdf_loggamma_to_plot = stats.loggamma.pdf(x, shape_gamma, loc=loc_gamma, scale=scale_gamma)
+    pdf_norm_to_plot = stats.norm.pdf(x_norm, shape_norm, scale_norm)
+    pdf_loggamma = stats.loggamma.pdf(f_no_zeros_mapgd_log10_rescaled_all, shape_gamma, loc=loc_gamma, scale=scale_gamma)
+    pdf_norm = stats.norm.pdf(f_no_zeros_mapgd_log10_rescaled_all, shape_norm, scale_norm)
     
     ll_loggamma = sum(numpy.log(pdf_loggamma))
     ll_norm = sum(numpy.log(pdf_norm))
@@ -307,8 +309,8 @@ def make_plot(variant_type):
             gammalog = k*k_trigamma*x_range - numpy.exp(numpy.sqrt(k_trigamma)*x_range + k_digamma) - numpy.log(special.gamma(k)) + k*k_digamma + numpy.log10(numpy.exp(1))
             #ax_f.plot(x_range, 10**gammalog, 'k', label='Gamma', lw=3)
 
-            ax_f.plot(x, pdf_loggamma, 'k', ls='--', lw=4, label='Gamma')
-            ax_f.plot(x_norm, pdf_norm, 'k', ls=':', lw=4, label='Lognormal')
+            ax_f.plot(x, pdf_loggamma_to_plot, 'k', ls='--', lw=4, label='Gamma')
+            ax_f.plot(x_norm, pdf_norm_to_plot, 'k', ls=':', lw=4, label='Lognormal')
 
             #x_log10_range =  numpy.linspace(min(means_log10_all) , max(means_log10_all) , 10000)
             x_log10_range =  numpy.linspace(min(means_log10_all_test) , max(means_log10_all_test) , 10000)
