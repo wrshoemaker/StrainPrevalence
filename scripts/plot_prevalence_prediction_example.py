@@ -74,12 +74,24 @@ f_mean = f_mean[idx_]
 
 # eco
 all_ = numpy.concatenate([predicted_prevalence_slm,observed_prevalence_slm])
-xy = numpy.vstack([observed_prevalence_slm, predicted_prevalence_slm])
-z = gaussian_kde(xy)(xy)
+#xy = numpy.vstack([observed_prevalence_slm, predicted_prevalence_slm])
+#z = gaussian_kde(xy)(xy)
 # Sort the points by density, so that the densest points are plotted last
-idx_ = z.argsort()
-x, y, z = observed_prevalence_slm[idx_], predicted_prevalence_slm[idx_], z[idx_]
+#idx_ = z.argsort()
+#x, y, z = observed_prevalence_slm[idx_], predicted_prevalence_slm[idx_], z[idx_]
+
+sorted_plot_data = prevalence_utils.plot_color_by_pt_dens(observed_prevalence_slm, predicted_prevalence_slm, radius=plot_utils.color_radius, loglog=1)
+x,y,z = sorted_plot_data[:, 0], sorted_plot_data[:, 1], sorted_plot_data[:, 2]
+
+#if len(sorted_plot_data[:, 0]) > plot_utils.n_points:
+#    idx_ = numpy.random.choice(len(sorted_plot_data[:, 0]), size=plot_utils.n_points, replace=False)
+#    x = x[idx_]
+#    y = y[idx_]
+#    z = z[idx_]
+
 sc_ax_prevalence_eco = ax_prevalence_eco.scatter(x, y, c=numpy.sqrt(z), cmap=plot_utils.variant_cmap_dict[variant_type], s=90, alpha=0.9, edgecolor='', zorder=1)
+
+
 
 
 clb_sc_ax_prevalence_eco = plt.colorbar(sc_ax_prevalence_eco, ax=ax_prevalence_eco)
@@ -145,15 +157,31 @@ prevalence_predicted_mean = numpy.asarray(prevalence_predicted_mean)
 
 
 all_ = numpy.concatenate([f_mean, observed_prevalence_slm])
-xy = numpy.vstack([f_mean, observed_prevalence_slm])
-z = gaussian_kde(xy)(xy)
+#xy = numpy.vstack([f_mean, observed_prevalence_slm])
+#z = gaussian_kde(xy)(xy)
 #max_ = max(all_)*1.2
 #min_ = min(all_)*0.8
 #min_ = 0.003864734299516908
 # Sort the points by density, so that the densest points are plotted last
-idx = z.argsort()
-x, y, z = f_mean[idx], observed_prevalence_slm[idx], z[idx]
+#idx = z.argsort()
+#x, y, z = f_mean[idx], observed_prevalence_slm[idx], z[idx]
+
+sorted_plot_data = prevalence_utils.plot_color_by_pt_dens(f_mean, observed_prevalence_slm, radius=plot_utils.color_radius, loglog=1)
+x,y,z = sorted_plot_data[:, 0], sorted_plot_data[:, 1], sorted_plot_data[:, 2]
+
+#if len(sorted_plot_data[:, 0]) > plot_utils.n_points:
+#    idx_ = numpy.random.choice(len(sorted_plot_data[:, 0]), size=plot_utils.n_points, replace=False)
+#    x = x[idx_]
+#    y = y[idx_]
+#    z = z[idx_]
+
+
+
 sc_ax_abundance_prevalence_eco = ax_abundance_prevalence_eco.scatter(x, y, c=numpy.sqrt(z), cmap=plot_utils.variant_cmap_dict[variant_type], s=90, alpha=1, edgecolor='', zorder=1, label = 'Observed')
+
+
+
+
 
 clb_sc_ax_abundance_prevalence_eco = plt.colorbar(sc_ax_abundance_prevalence_eco, ax=ax_abundance_prevalence_eco)
 #clb.ax.tick_params(labelsize=8) 
@@ -178,7 +206,7 @@ ax_abundance_prevalence_eco.set_xscale('log', basex=10)
 ax_abundance_prevalence_eco.set_yscale('log', basey=10)
 ax_abundance_prevalence_eco.set_xlabel('Mean within-host allele\nfrequency across hosts, ' + r'$\bar{f}$', fontsize=12)
 ax_abundance_prevalence_eco.set_ylabel('Allele prevalence', fontsize=12)
-ax_abundance_prevalence_eco.legend(loc="upper left", fontsize=12)
+ax_abundance_prevalence_eco.legend(loc="lower right", fontsize=12)
 ax_abundance_prevalence_eco.xaxis.set_tick_params(labelsize=8)
 ax_abundance_prevalence_eco.yaxis.set_tick_params(labelsize=8)
 
